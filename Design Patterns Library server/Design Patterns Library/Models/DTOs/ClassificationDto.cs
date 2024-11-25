@@ -1,8 +1,7 @@
-﻿namespace Design_Patterns_Library.Models.Entities
+﻿namespace Design_Patterns_Library.Models.DTOs
 {
-    public class Classification
+    public class ClassificationDto
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Purpose { get; set; }
