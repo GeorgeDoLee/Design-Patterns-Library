@@ -9,25 +9,21 @@ const MainLayout = ({children}) => {
         link: '/'
       },
       {
+        name: 'Classification Guide',
+        link: '/classification-guide'
+      },
+      {
         name: 'Patterns Catalogue',
         link: '/patterns-catalogue'
       },
       {
-        name: 'Book',
+        name: 'Download Book',
         link: '/book'
-      },
-      {
-        name: 'About us',
-        link: '/about-us'
-      },
-      {
-        name: 'Contact us',
-        link: '/contact-us'
       }
     ];
 
     return (
-      <div className='flex flex-col min-h-screen'>
+      <div className='flex flex-col min-h-screen bg-backgroundWhite'>
         <Header navItems={navItems} />
         <div className='flex-grow '>
           {children}
@@ -35,6 +31,6 @@ const MainLayout = ({children}) => {
         <Footer navItems={navItems} />
       </div>
     )
-  }
+}
 
 export default MainLayout
