@@ -17,7 +17,7 @@ const useFetch = (path) => {
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-      
+
       const result = await response.json();
       setData(result);
     } catch (err) {
@@ -29,7 +29,7 @@ const useFetch = (path) => {
 
   useEffect(() => {
     fetchData();
-  }, [url]);
+  }, [path]);
 
   return { data, isLoading, error, refetch: fetchData };
 };

@@ -7,12 +7,18 @@ import {
 
 import './index.css';
 import Home from './pages/Home';
+import AdminPage from './pages/Admin Pages/AdminPage';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Home />,
+    errorElement: <div>404 page not found</div>
   },
+  {
+    path: '/admin',
+    element: <AdminPage />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
