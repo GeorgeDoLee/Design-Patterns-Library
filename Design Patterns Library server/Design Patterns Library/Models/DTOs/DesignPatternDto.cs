@@ -18,7 +18,6 @@ namespace Design_Patterns_Library.Models.DTOs
         public string Implementation { get; set; }
         public string SampleCode { get; set; }
         public string KnownUses { get; set; }
-        public List<Guid> RelatedPatternIds { get; set; }
     }
 }
 

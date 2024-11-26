@@ -29,8 +29,6 @@ namespace Design_Patterns_Library.Controllers
             {
                 var designPatterns = await _context.DesignPatterns
                     .Include(dp => dp.Classification)
-                    .Include(dp => dp.RelatedPatterns)
-                    .ThenInclude(rp => rp.RelatedDesignPattern)
                     .ToListAsync();
 
                 return Ok(designPatterns);
@@ -48,8 +46,6 @@ namespace Design_Patterns_Library.Controllers
             {
                 var designPattern = await _context.DesignPatterns
                     .Include(dp => dp.Classification)
-                    .Include(dp => dp.RelatedPatterns)
-                    .ThenInclude(rp => rp.RelatedDesignPattern)
                     .FirstOrDefaultAsync(dp => dp.Id == id);
 
                 if (designPattern == null)
@@ -102,21 +98,6 @@ namespace Design_Patterns_Library.Controllers
                 _context.DesignPatterns.Add(designPattern);
                 await _context.SaveChangesAsync();
 
-                if (dto.RelatedPatternIds != null && dto.RelatedPatternIds.Any())
-                {
-                    foreach (var relatedPatternId in dto.RelatedPatternIds)
-                    {
-                        var relatedPattern = new RelatedPattern
-                        {
-                            DesignPatternId = designPattern.Id,
-                            RelatedDesignPatternId = relatedPatternId
-                        };
-
-                        _context.RelatedPatterns.Add(relatedPattern);
-                    }
-                    await _context.SaveChangesAsync();
-                }
-
                 return CreatedAtAction(nameof(GetDesignPatternById), new { id = designPattern.Id }, designPattern);
             }
             catch (Exception ex)
@@ -158,26 +139,6 @@ namespace Design_Patterns_Library.Controllers
 
                 await _context.SaveChangesAsync();
 
-                var currentRelatedPatterns = await _context.RelatedPatterns
-                    .Where(rp => rp.DesignPatternId == id)
-                    .ToListAsync();
-
-                _context.RelatedPatterns.RemoveRange(currentRelatedPatterns);
-
-                if (dto.RelatedPatternIds != null && dto.RelatedPatternIds.Any())
-                {
-                    foreach (var relatedPatternId in dto.RelatedPatternIds)
-                    {
-                        var relatedPattern = new RelatedPattern
-                        {
-                            DesignPatternId = id,
-                            RelatedDesignPatternId = relatedPatternId
-                        };
-                        _context.RelatedPatterns.Add(relatedPattern);
-                    }
-                    await _context.SaveChangesAsync();
-                }
-
                 return NoContent();
             }
             catch (Exception ex)
@@ -198,11 +159,6 @@ namespace Design_Patterns_Library.Controllers
                     return NotFound($"Design Pattern with ID {id} not found.");
                 }
 
-                var relatedPatterns = await _context.RelatedPatterns
-                    .Where(rp => rp.DesignPatternId == id || rp.RelatedDesignPatternId == id)
-                    .ToListAsync();
-
-                _context.RelatedPatterns.RemoveRange(relatedPatterns);
                 _context.DesignPatterns.Remove(designPattern);
                 await _context.SaveChangesAsync();
 

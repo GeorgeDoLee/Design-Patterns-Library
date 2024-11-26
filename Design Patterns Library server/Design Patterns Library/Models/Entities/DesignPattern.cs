@@ -16,7 +16,6 @@
         public string Implementation { get; set; }
         public string SampleCode { get; set; }
         public string KnownUses { get; set; }
-        public List<RelatedPattern> RelatedPatterns { get; set; }
         public Classification Classification { get; set; }
     }
 }
