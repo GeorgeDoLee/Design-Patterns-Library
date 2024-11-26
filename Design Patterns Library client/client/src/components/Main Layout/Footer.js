@@ -50,7 +50,7 @@ const Footer = ({navItems}) => {
     ]
 
   return (
-    <footer className='px-20 py-10'>
+    <footer className='px-20 py-10 mt-36'>
         <div className='flex flex-col gap-10'>
             <div className='flex gap-52'>
                 <InfoColumn header='Navigation' items={navItems} />
@@ -58,7 +58,7 @@ const Footer = ({navItems}) => {
                 <InfoColumn header='About' items={aboutUsItems} />
             </div>
 
-            <div className='border-b border-primaryText' />
+            <div className='border-b border-opacity-50 border-primaryText' />
 
              {/* logo placeholder */}
             <div onCanPlay={() => navigate('/')} className='h-12 rounded-full w-36 bg-primaryText' />

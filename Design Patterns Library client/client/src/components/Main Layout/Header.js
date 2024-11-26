@@ -18,6 +18,7 @@ const Header = ({navItems}) => {
                       <li 
                           key={index}
                           onClick={() => navigate(item.link)}
+                          className='cursor-pointer'
                       >
                           {item.name}
                       </li>
@@ -25,7 +26,7 @@ const Header = ({navItems}) => {
               </ul>
           </nav>
 
-          <div className='self-stretch border-r-2 border-zinc-800' />
+          <div className='self-stretch border-r-2 border-opacity-50 border-zinc-800' />
           
           <div className='flex flex-col gap-2'>
             <FaGithub className='w-6 h-auto text-primaryText' />
