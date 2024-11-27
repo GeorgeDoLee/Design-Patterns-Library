@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from './Header'
 import Footer from './Footer'
+import { useLocation } from 'react-router-dom';
 
 const MainLayout = ({children}) => {
     const navItems = [
@@ -21,6 +22,12 @@ const MainLayout = ({children}) => {
         link: '/book'
       }
     ];
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
 
     return (
       <div className='flex flex-col min-h-screen bg-backgroundWhite'>
