@@ -11,6 +11,7 @@ import {
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import PatternsCatalogue from '../components/PatternsCatalogue';
+import DownloadBook from '../components/DownloadBook';
 
 const InfoBlock = ({ icon: Icon, title, content }) => (
     <div>
@@ -102,6 +103,7 @@ const DesignPatternPage = () => (
                 <Pattern />
             </div>
             <PatternsCatalogue />
+            <DownloadBook />
         </div>
     </MainLayout>
 );

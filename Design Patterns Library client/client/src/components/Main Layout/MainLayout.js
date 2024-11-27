@@ -13,8 +13,8 @@ const MainLayout = ({children}) => {
         link: '/classification-guide'
       },
       {
-        name: 'Patterns Catalogue',
-        link: '/patterns-catalogue'
+        name: 'Pattern Catalogue',
+        link: '/pattern-catalogue'
       },
       {
         name: 'Download Book',
