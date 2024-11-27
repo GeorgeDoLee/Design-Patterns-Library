@@ -8,6 +8,7 @@ import {
 import './index.css';
 import Home from './pages/Home';
 import AdminPage from './pages/Admin Pages/AdminPage';
+import DesignPatternPage from './pages/DesignPatternPage';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminPage />
+  },
+  {
+    path: '/design-pattern/:name/:id',
+    element: <DesignPatternPage />
   }
 ]);
 

@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import useFetch from '../hooks/useFetch';
-import { IoConstructSharp } from "react-icons/io5";
-import { PiTreeStructure } from "react-icons/pi";
+import { IoConstructSharp, PiTreeStructure } from '../assets/ReactIcons'
 import { useNavigate } from 'react-router-dom';
 
 const DesignPattern = ({designPattern}) => {

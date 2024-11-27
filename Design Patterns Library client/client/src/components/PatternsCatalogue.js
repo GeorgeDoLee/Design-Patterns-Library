@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import { FaSortAlphaDown, FaSortAlphaUp } from "react-icons/fa";
-import { IoSearchOutline } from "react-icons/io5";
+import { FaSortAlphaDown, FaSortAlphaUp, IoSearchOutline } from '../assets/ReactIcons'
 import DesignPatterns from './DesignPatterns';
-
 
 const Filters = () => {
     const filters = [
