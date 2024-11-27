@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     element: <AdminPage />
   },
   {
-    path: '/pattern-catalogue',
+    path: '/patterns-catalogue',
     element: <PatternCataloguePage />
   },
   {

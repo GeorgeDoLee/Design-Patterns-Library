@@ -1,14 +1,12 @@
-import { IoConstructSharp, IoExtensionPuzzleOutline, IoBookOutline } from "react-icons/io5";
+import { FaRegLightbulb, FaCode, FaSortAlphaDown, FaSortAlphaUp, FaLinkedin, FaGithub } from "react-icons/fa";
+import { IoConstructSharp, IoExtensionPuzzleOutline, IoBookOutline, IoSearchOutline } from "react-icons/io5";
+import { MdCompareArrows, MdContentCopy } from "react-icons/md";
+import { LiaProjectDiagramSolid } from "react-icons/lia";
 import { PiTreeStructure } from "react-icons/pi";
 import { BsChatRightDots } from "react-icons/bs";
-import { FaRegLightbulb, FaCode } from "react-icons/fa";
 import { FaListCheck } from 'react-icons/fa6';
 import { RiFlowChart } from "react-icons/ri";
-import { LiaProjectDiagramSolid } from "react-icons/lia";
-import { MdCompareArrows } from "react-icons/md";
-import { MdContentCopy } from "react-icons/md";
-import { FaSortAlphaDown, FaSortAlphaUp } from "react-icons/fa";
-import { IoSearchOutline } from "react-icons/io5";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 export {
     IoConstructSharp,
@@ -25,5 +23,8 @@ export {
     MdContentCopy,
     FaSortAlphaDown,
     FaSortAlphaUp,
-    IoSearchOutline
+    IoSearchOutline,
+    RxHamburgerMenu,
+    FaLinkedin,
+    FaGithub
 }

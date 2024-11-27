@@ -4,46 +4,36 @@ import DesignPatterns from './DesignPatterns';
 
 const Filters = () => {
     const filters = [
-        {
-            id: 1,
-            name: 'All'
-        },
-        {
-            id: 2,
-            name: 'Creational'
-        },
-        {
-            id: 3,
-            name: 'Structural'
-        },
-        {
-            id: 4,
-            name: 'Behavioral'
-        },
+        { id: 1, name: 'All' },
+        { id: 2, name: 'Creational' },
+        { id: 3, name: 'Structural' },
+        { id: 4, name: 'Behavioral' },
     ]
     const [chosenFilter, setChosenFilter] = useState(1);
     const [sortAlpha, setSortAlpha] = useState(true);
 
     return (
-        <div 
-            className='flex items-center justify-between border-b border-opacity-50 border-b-primaryText'
-        >
-            <div className='flex items-center gap-10'>
-                {filters.map((filter, index) => (
+        <div className='flex flex-col items-center justify-between border-b border-opacity-50 md:flex-row border-b-primaryText'>
+            <div className='flex items-center w-full gap-4 overflow-x-auto md:gap-10'>
+                {filters.map((filter) => (
                     <button
-                        key={index}
+                        key={filter.id}
                         onClick={() => setChosenFilter(filter.id)}
-                        className={`${chosenFilter === filter.id ? 'text-accent border-b-2 border-accent' : 'text-primaryText'} py-4 text-base font-semibold`}
+                        className={`${chosenFilter === filter.id ? 'text-accent border-b-2 border-accent' : 'text-primaryText'} md:py-4 text-base font-semibold whitespace-nowrap`}
                     >
                         {filter.name}
                     </button>
                 ))}
             </div>
             
-            <div className='flex items-center gap-3'>
-                <div className='flex items-center gap-2 px-2 py-1 border border-opacity-50 rounded-md border-primaryText'>
+            <div className='flex items-center w-full gap-3 py-4 md:py-0 md:flex-row md:w-auto'>
+                <div className='flex items-center w-full gap-2 px-2 py-1 border border-opacity-50 rounded-md border-primaryText md:w-56 lg:w-auto'>
                     <IoSearchOutline className='w-auto h-5 text-primaryText' />
-                    <input type="text" placeholder='Search for pattern...' className='text-base outline-none w-80 text-primaryText' />
+                    <input 
+                        type="text" 
+                        placeholder='Search for pattern...' 
+                        className='w-full text-base outline-none lg:w-80 text-primaryText' 
+                    />
                 </div>
 
                 <div>
@@ -66,7 +56,7 @@ const Filters = () => {
 
 const PatternsCatalogue = () => {
   return (
-    <section className='px-20 py-10 text-primaryText'>
+    <section className='px-4 py-10 lg:px-20 text-primaryText'>
         <Filters />
 
         <div className='mt-8'>
