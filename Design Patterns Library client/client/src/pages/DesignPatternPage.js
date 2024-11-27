@@ -1,51 +1,111 @@
-import React from 'react'
+import React, { useState } from 'react';
+import MainLayout from '../components/Main Layout/MainLayout';
+import { useParams } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
-import { IoConstructSharp, PiTreeStructure } from '../assets/ReactIcons'
-import { useNavigate } from 'react-router-dom';
+import { 
+    IoConstructSharp, IoExtensionPuzzleOutline, IoBookOutline,
+    PiTreeStructure, BsChatRightDots, FaRegLightbulb, FaListCheck,
+    RiFlowChart, LiaProjectDiagramSolid, MdCompareArrows, MdContentCopy,
+    FaCode
+} from '../assets/ReactIcons';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import PatternsCatalogue from '../components/PatternsCatalogue';
+import DownloadBook from '../components/DownloadBook';
 
-const DesignPattern = ({designPattern}) => {
-    const navigate = useNavigate();
+const InfoBlock = ({ icon: Icon, title, content }) => (
+    <div>
+        <div className='flex items-center gap-2'>
+            <Icon className='w-auto h-5 text-primaryText' />
+            <h1 className='mb-1 text-xl font-semibold'>{title}</h1>
+        </div>
+        <p className='text-base max-w-[80ch] break-words'>{content}</p>
+    </div>
+);
+
+const CodeBlock = ({ code }) => {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(code).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1500);
+        });
+    };
 
     return (
-        <div 
-            onClick={() => navigate(`/design-pattern/${designPattern.name}/${designPattern.id}`)}
-            className='flex flex-col items-center gap-4 p-4 transition-colors rounded-md cursor-pointer md:flex-row md:gap-10 text-primaryText hover:bg-gray-100'
-        >
-            <div className='flex flex-col items-center justify-center w-32 gap-2 text-center'>
-                <IoConstructSharp className='w-auto h-10 text-primaryText' />
-                <h1 className='text-xl font-semibold break-words'>{designPattern.name}</h1>
+        <div className='p-4 bg-gray-900 rounded-lg shadow-lg'>
+            <div className='flex items-center justify-between'>
+                <h2 className='mb-2 text-lg font-semibold text-white'>Sample Code</h2>
+                <button 
+                    onClick={handleCopy}
+                    className='flex items-center gap-1 px-3 py-1 text-white rounded-lg bg-primaryText hover:bg-primaryDark'>
+                    <MdContentCopy className='w-5 h-5' />
+                    <span>{copied ? 'Copied!' : 'Copy'}</span>
+                </button>
             </div>
-
-            <div className='self-stretch hidden border-r border-opacity-50 md:block border-primaryText' />
-
-            <p className='text-base md:text-lg break-words text-center md:text-left w-full md:w-[80ch]'>
-                {designPattern.intent}
-            </p>
-
-            <div className='self-stretch hidden border-r border-opacity-50 md:block border-primaryText' />
-            
-            <div className='flex items-center gap-2'>
-                <PiTreeStructure className='w-auto h-8 text-primaryText' />
-                <p className='text-base md:text-lg'>
-                    Structural
-                </p>
-            </div>
+            <SyntaxHighlighter language="csharp" style={dracula} className="rounded-md">
+                {code || '// No sample code provided.'}
+            </SyntaxHighlighter>
         </div>
-    )
-}
+    );
+};
 
-const DesignPatterns = () => {
-    const {data: designPatterns, isLoading, error} = useFetch('/DesignPattern');
+const Pattern = () => {
+    const { id } = useParams();
+    const { data: pattern, isLoading, error } = useFetch(`/DesignPattern/${id}`);
 
-  return (
-    <div className='flex flex-col gap-4 md:gap-10'>
-        {isLoading && <p className='text-center'>Loading...</p>}
-        {error && <p className='text-center text-red-500'>{error.message}</p>}
-        {designPatterns && designPatterns.map((designPattern) => (
-            <DesignPattern key={designPattern.id} designPattern={designPattern} />
-        ))}
-    </div>
-  )
-}
+    if (isLoading) return <p>Loading...</p>;
+    if (error) return <p>{error.message}</p>;
 
-export default DesignPatterns
+    return pattern && (
+        <div className='flex flex-col gap-10 text-primaryText'>
+            <div className='flex items-center gap-10'>
+                <div className='flex items-center gap-5'>
+                    <IoConstructSharp className='w-auto h-12 text-primaryText' />
+                    <div>
+                        <h1 className='text-2xl font-semibold'>{pattern.name}</h1>
+                        <p className='mt-1 text-lg'>Also Known As {pattern.alsoKnownAs}</p>
+                    </div>
+                </div>
+                <div className='self-stretch border-r border-opacity-50 border-primaryText' />
+                <div className='flex items-center gap-3'>
+                    <PiTreeStructure className='w-auto h-8 text-primaryText' />
+                    <h1 className='text-xl'>{pattern.classification.name}</h1>
+                </div>
+            </div>
+            
+            <div className='grid grid-cols-2 gap-10'>
+                {[
+                    { icon: BsChatRightDots, title: "Intent", content: pattern.intent },
+                    { icon: IoExtensionPuzzleOutline, title: "Motivation", content: pattern.motivation },
+                    { icon: FaRegLightbulb, title: "Applicability", content: pattern.applicability },
+                    { icon: RiFlowChart, title: "Structure", content: pattern.structure },
+                    { icon: LiaProjectDiagramSolid, title: "Participants", content: pattern.participants },
+                    { icon: MdCompareArrows, title: "Collaborations", content: pattern.collaborations },
+                    { icon: FaListCheck, title: "Consequences", content: pattern.consequences },
+                    { icon: FaCode, title: "Implementation", content: pattern.implementation },
+                    { icon: IoBookOutline, title: "Known Uses", content: pattern.knownUses },
+                ].map((item, index) => (
+                    <InfoBlock key={index} {...item} />
+                ))}
+            </div>
+
+            <CodeBlock code={pattern.sampleCode} />
+        </div>
+    );
+};
+
+const DesignPatternPage = () => (
+    <MainLayout>
+        <div>
+            <div className='px-20 py-10'>
+                <Pattern />
+            </div>
+            <PatternsCatalogue />
+            <DownloadBook />
+        </div>
+    </MainLayout>
+);
+
+export default DesignPatternPage;
