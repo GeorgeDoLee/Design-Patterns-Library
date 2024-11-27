@@ -12,12 +12,13 @@ import DesignPatternPage from './pages/DesignPatternPage';
 import PatternCataloguePage from './pages/PatternCataloguePage';
 import ClassificationGuidePage from './pages/ClassificationGuidePage';
 import BookPage from './pages/BookPage';
+import ErrorPage from './pages/ErrorPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
-    errorElement: <div>404 page not found</div>
+    errorElement: <ErrorPage />
   },
   {
     path: '/admin',
