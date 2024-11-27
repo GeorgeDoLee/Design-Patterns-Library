@@ -1,29 +1,29 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import { FaLinkedin, FaGithub  } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom'
+import { FaLinkedin, FaGithub } from "react-icons/fa"
 
-const Header = ({navItems}) => {
-    const navigate = useNavigate();
+const Header = ({ navItems }) => {
+  const navigate = useNavigate()
 
   return (
-    <header className='px-10 py-5'>
+    <header className='sticky top-0 z-50 px-10 py-5 shadow-md bg-backgroundWhite'>
       <div className='flex items-center justify-between'>
         {/* logo placeholder */}
         <div onCanPlay={() => navigate('/')} className='h-12 rounded-full w-36 bg-primaryText' />
 
         <div className='flex items-center gap-5'>
           <nav>
-              <ul className='flex items-center gap-10 text-base font-semibold text-primaryText'>
-                  {navItems.map((item, index) => (
-                      <li 
-                          key={index}
-                          onClick={() => navigate(item.link)}
-                          className='cursor-pointer'
-                      >
-                          {item.name}
-                      </li>
-                  ))}
-              </ul>
+            <ul className='flex items-center gap-10 text-base font-semibold text-primaryText'>
+              {navItems.map((item, index) => (
+                <li 
+                  key={index}
+                  onClick={() => navigate(item.link)}
+                  className='cursor-pointer'
+                >
+                  {item.name}
+                </li>
+              ))}
+            </ul>
           </nav>
 
           <div className='self-stretch border-r-2 border-opacity-50 border-zinc-800' />
