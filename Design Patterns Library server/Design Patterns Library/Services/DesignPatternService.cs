@@ -32,6 +32,7 @@ namespace Design_Patterns_Library.Services
                 Implementation = dto.Implementation,
                 SampleCode = dto.SampleCode,
                 KnownUses = dto.KnownUses,
+                Icon = ""
             };
 
             _dbContext.DesignPatterns.Add(designPattern);

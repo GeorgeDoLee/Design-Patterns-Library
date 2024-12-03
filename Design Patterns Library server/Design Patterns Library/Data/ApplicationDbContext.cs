@@ -9,7 +9,17 @@ namespace Design_Patterns_Library.Data
         {
         }
 
-        public DbSet<Classification> Classifications { get; set; }
         public DbSet<DesignPattern> DesignPatterns { get; set; }
+        public DbSet<Classification> Classifications { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DesignPattern>()
+                .HasOne(dp => dp.Classification)
+                .WithMany()
+                .HasForeignKey(dp => dp.ClassificationId);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

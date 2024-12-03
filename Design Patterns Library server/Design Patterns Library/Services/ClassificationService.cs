@@ -21,7 +21,7 @@ namespace Design_Patterns_Library.Services
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                Photo = ""
+                Icon = "",
             };
 
             _dbContext.Classifications.Add(classification);

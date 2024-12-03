@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Design_Patterns_Library.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class intoverguid : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,11 +14,11 @@ namespace Design_Patterns_Library.Migrations
                 name: "Classifications",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Purpose = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Scope = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,9 +29,9 @@ namespace Design_Patterns_Library.Migrations
                 name: "DesignPatterns",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClassificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Intent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AlsoKnownAs = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Motivation = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -43,7 +42,9 @@ namespace Design_Patterns_Library.Migrations
                     Consequences = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Implementation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SampleCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KnownUses = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    KnownUses = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClassificationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,47 +57,15 @@ namespace Design_Patterns_Library.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "RelatedPatterns",
-                columns: table => new
-                {
-                    DesignPatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RelatedDesignPatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RelatedPatterns", x => new { x.DesignPatternId, x.RelatedDesignPatternId });
-                    table.ForeignKey(
-                        name: "FK_RelatedPatterns_DesignPatterns_DesignPatternId",
-                        column: x => x.DesignPatternId,
-                        principalTable: "DesignPatterns",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RelatedPatterns_DesignPatterns_RelatedDesignPatternId",
-                        column: x => x.RelatedDesignPatternId,
-                        principalTable: "DesignPatterns",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_DesignPatterns_ClassificationId",
                 table: "DesignPatterns",
                 column: "ClassificationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RelatedPatterns_RelatedDesignPatternId",
-                table: "RelatedPatterns",
-                column: "RelatedDesignPatternId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "RelatedPatterns");
-
             migrationBuilder.DropTable(
                 name: "DesignPatterns");
 

@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public required int ClassificationId { get; set; }
         public required string Intent { get; set; }
         public string AlsoKnownAs { get; set; }
         public required string Motivation { get; set; }
@@ -16,6 +15,8 @@
         public required string Implementation { get; set; }
         public required string SampleCode { get; set; }
         public required string KnownUses { get; set; }
+        public string Icon { get; set; }
+        public required int ClassificationId { get; set; }
         public Classification Classification { get; set; }
     }
 }
