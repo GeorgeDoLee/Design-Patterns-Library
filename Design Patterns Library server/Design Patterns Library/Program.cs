@@ -1,4 +1,5 @@
 using Design_Patterns_Library.Data;
+using Design_Patterns_Library.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 
@@ -22,6 +23,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddScoped<DesignPatternService>();
+builder.Services.AddScoped<ClassificationService>();
 
 var app = builder.Build();
 

@@ -6,6 +6,7 @@ using Design_Patterns_Library.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using Design_Patterns_Library.Services;
 
 namespace Design_Patterns_Library.Controllers
 {
@@ -13,131 +14,79 @@ namespace Design_Patterns_Library.Controllers
     [ApiController]
     public class ClassificationController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-
-        public ClassificationController(ApplicationDbContext context)
+        private readonly ClassificationService _classificationService;
+        public ClassificationController(ClassificationService classificationService)
         {
-            _context = context;
+            _classificationService = classificationService;
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddClassification(AddClassificationDto dto)
+        {
+            var classification = await _classificationService.AddClassificationAsync(dto);
+
+            if(classification == null)
+            {
+                return BadRequest("Error Creating Classification.");
+            }
+
+            return Ok(classification);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateClassification(int id, UpdateClassificationDto dto)
+        {
+            var updatedClassification = await _classificationService.UpdateClassificationAsync(id, dto);
+
+            if(updatedClassification == null)
+            {
+                return BadRequest("Error Occurred While Trying To Update Classification.");
+            }
+
+            return Ok(updatedClassification);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveClassification(int id)
+        {
+            var classificationRemoved = await _classificationService.RemoveClassificationAsync(id);
+
+
+            return classificationRemoved ? 
+                Ok("Classification Removed Successfully.") 
+                : 
+                BadRequest("Error Occured While Trying To Remove Classification.");
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetClassificationById(int id)
+        {
+            var classification = await _classificationService.GetClassificationByIdAsync(id);
+
+            if(classification == null)
+            {
+                return NotFound("Classification Not Found.");
+            }
+
+            return Ok(classification);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAllClassifications()
         {
-            try
+            var classifications = await _classificationService.GetAllClassificationsAsync();
+
+            if(classifications == null || !classifications.Any())
             {
-                var classifications = await _context.Classifications.ToListAsync();
-
-                return Ok(classifications);
+                return NotFound("No Classification Found.");
             }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving classifications: {ex.Message}");
-            }
-        }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetClassificationById(Guid id)
-        {
-            try
-            {
-                var classification = await _context.Classifications.FindAsync(id);
-
-                if (classification == null)
-                {
-                    return NotFound($"Classification with ID {id} not found.");
-                }
-
-
-                return Ok(classification);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving classification by ID: {ex.Message}");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostClassification(ClassificationDto dto)
-        {
-            try
-            {
-                if (dto == null)
-                {
-                    return BadRequest("Invalid classification data.");
-                }
-
-                var classification = new Classification
-                {
-                    Name = dto.Name,
-                    Description = dto.Description,
-                    Purpose = dto.Purpose,
-                    Scope = dto.Scope
-                };
-
-                _context.Classifications.Add(classification);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetClassificationById), new { id = classification.Id }, classification);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating classification: {ex.Message}");
-            }
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateClassification(Guid id, ClassificationDto dto)
-        {
-            try
-            {
-                if (dto == null || id == Guid.Empty)
-                {
-                    return BadRequest("Invalid classification data or ID mismatch.");
-                }
-
-                var existingClassification = await _context.Classifications.FindAsync(id);
-
-                if (existingClassification == null)
-                {
-                    return NotFound($"Classification with ID {id} not found.");
-                }
-
-                existingClassification.Name = dto.Name;
-                existingClassification.Description = dto.Description;
-                existingClassification.Purpose = dto.Purpose;
-                existingClassification.Scope = dto.Scope;
-
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error updating classification: {ex.Message}");
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClassification(Guid id)
-        {
-            try
-            {
-                var classification = await _context.Classifications.FindAsync(id);
-
-                if (classification == null)
-                {
-                    return NotFound($"Classification with ID {id} not found.");
-                }
-
-                _context.Classifications.Remove(classification);
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting classification: {ex.Message}");
-            }
+            return Ok(classifications);
         }
     }
 }

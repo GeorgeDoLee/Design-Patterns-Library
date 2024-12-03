@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Design_Patterns_Library.Services;
 
 namespace Design_Patterns_Library.Controllers
 {
@@ -15,159 +16,78 @@ namespace Design_Patterns_Library.Controllers
     [ApiController]
     public class DesignPatternController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly DesignPatternService _designPatternService;
 
-        public DesignPatternController(ApplicationDbContext context)
+        public DesignPatternController(DesignPatternService designPatternService)
         {
-            _context = context;
+            _designPatternService = designPatternService;
         }
+
+        
+        [HttpPost]
+        public async Task<IActionResult> AddDesignPatternn(AddDesignPatternDto dto)
+        {
+            var designPattern = await _designPatternService.AddDesignPatternAsync(dto);
+
+            if(designPattern == null)
+            {
+                return BadRequest("Error While Creating Design Pattern.");
+            }
+
+            return Ok(designPattern);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateDesignPattern(int id, UpdateDesignPatternDto dto)
+        {
+            var updatedDesignPattern = await _designPatternService.UpdateDesignPatternAsync(id, dto);
+
+            if(updatedDesignPattern == null)
+            {
+                return NotFound("Design Pattern Not Found.");
+            }
+
+            return Ok(updatedDesignPattern);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveDesignPattern(int id)
+        {
+            var designPatternRemoved = await _designPatternService.RemoveDesignPatternAsync(id);
+
+            return designPatternRemoved ? 
+                Ok("Design Pattern Removed Successfully") 
+                : 
+                BadRequest("Error While Trying To Remove Design Pattern.");
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDesignPatternById(int id)
+        {
+            var designPattern = await _designPatternService.GetDesignPatternByIdAsync(id);
+
+            if (designPattern == null)
+            {
+                return NotFound("Design Pattern Not Found.");
+            }
+
+            return Ok(designPattern);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAllDesignPatterns()
         {
-            try
+            var designPatterns = await _designPatternService.GetAllDesignPatternsAsync();
+
+            if (designPatterns == null || !designPatterns.Any())
             {
-                var designPatterns = await _context.DesignPatterns
-                    .Include(dp => dp.Classification)
-                    .ToListAsync();
-
-                return Ok(designPatterns);
+                return NotFound("No Design Pattern Found.");
             }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving design patterns: {ex.Message}");
-            }
-        }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetDesignPatternById(Guid id)
-        {
-            try
-            {
-                var designPattern = await _context.DesignPatterns
-                    .Include(dp => dp.Classification)
-                    .FirstOrDefaultAsync(dp => dp.Id == id);
-
-                if (designPattern == null)
-                {
-                    return NotFound($"Design Pattern with ID {id} not found.");
-                }
-
-                return Ok(designPattern);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving design pattern by ID: {ex.Message}");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostDesignPattern(DesignPatternDto dto)
-        {
-            try
-            {
-                if (dto == null)
-                {
-                    return BadRequest("Invalid design pattern data.");
-                }
-
-                var classification = await _context.Classifications.FindAsync(dto.ClassificationId);
-
-                if (classification == null)
-                {
-                    return BadRequest("Classification not found.");
-                }
-
-                var designPattern = new DesignPattern
-                {
-                    Name = dto.Name,
-                    ClassificationId = dto.ClassificationId,
-                    Intent = dto.Intent,
-                    AlsoKnownAs = dto.AlsoKnownAs,
-                    Motivation = dto.Motivation,
-                    Applicability = dto.Applicability,
-                    Structure = dto.Structure,
-                    Participants = dto.Participants,
-                    Collaborations = dto.Collaborations,
-                    Consequences = dto.Consequences,
-                    Implementation = dto.Implementation,
-                    SampleCode = dto.SampleCode,
-                    KnownUses = dto.KnownUses
-                };
-
-                _context.DesignPatterns.Add(designPattern);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetDesignPatternById), new { id = designPattern.Id }, designPattern);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating design pattern: {ex.Message}");
-            }
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDesignPattern(Guid id, DesignPatternDto dto)
-        {
-            try
-            {
-                if (dto == null || id == Guid.Empty)
-                {
-                    return BadRequest("Invalid design pattern data or ID mismatch.");
-                }
-
-                var existingDesignPattern = await _context.DesignPatterns.FindAsync(id);
-
-                if (existingDesignPattern == null)
-                {
-                    return NotFound($"Design Pattern with ID {id} not found.");
-                }
-
-                existingDesignPattern.Name = dto.Name;
-                existingDesignPattern.Intent = dto.Intent;
-                existingDesignPattern.AlsoKnownAs = dto.AlsoKnownAs;
-                existingDesignPattern.Motivation = dto.Motivation;
-                existingDesignPattern.Applicability = dto.Applicability;
-                existingDesignPattern.Structure = dto.Structure;
-                existingDesignPattern.Participants = dto.Participants;
-                existingDesignPattern.Collaborations = dto.Collaborations;
-                existingDesignPattern.Consequences = dto.Consequences;
-                existingDesignPattern.Implementation = dto.Implementation;
-                existingDesignPattern.SampleCode = dto.SampleCode;
-                existingDesignPattern.KnownUses = dto.KnownUses;
-                existingDesignPattern.ClassificationId = dto.ClassificationId;
-
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error updating design pattern: {ex.Message}");
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDesignPattern(Guid id)
-        {
-            try
-            {
-                var designPattern = await _context.DesignPatterns.FindAsync(id);
-
-                if (designPattern == null)
-                {
-                    return NotFound($"Design Pattern with ID {id} not found.");
-                }
-
-                _context.DesignPatterns.Remove(designPattern);
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting design pattern: {ex.Message}");
-            }
+            return Ok(designPatterns);
         }
     }
 }
