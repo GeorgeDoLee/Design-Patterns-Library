@@ -1,4 +1,4 @@
-const BASE_URL = 'https://localhost:7201/api';
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/api`;
 
 const apiRequest = async (endpoint, method = 'GET', data = null) => {
     const headers = {};

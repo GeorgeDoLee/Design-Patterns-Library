@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const BASE_URL = 'https://localhost:7201/api';
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/api`;
 
 const useFetch = (path) => {
   const [data, setData] = useState(null);

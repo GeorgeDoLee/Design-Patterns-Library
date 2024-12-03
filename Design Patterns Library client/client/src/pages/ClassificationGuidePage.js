@@ -9,10 +9,11 @@ const Classification = ({ classification }) => {
   return (
     <div>
       <div className="flex items-center gap-3 py-2 border-b border-opacity-50 md:gap-5 border-primaryText">
-        {/* icon placeholder */}
-        <div className="w-10 h-10 rounded-full md:h-8 bg-primaryText" />
-        
-        {/* <img src={classification.icon} alt={classification.name} /> */}
+        <img 
+          src={`${process.env.REACT_APP_API_BASE_URL}/${classification.icon}`} 
+          alt={classification.name} 
+          className='w-auto h-8'
+        />
         <h1 className="text-lg font-semibold md:text-xl">
           {classification.name}
         </h1>
