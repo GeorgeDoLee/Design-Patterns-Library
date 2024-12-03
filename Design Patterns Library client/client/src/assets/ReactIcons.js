@@ -1,4 +1,4 @@
-import { FaRegLightbulb, FaCode, FaSortAlphaDown, FaSortAlphaUp, FaLinkedin, FaGithub } from "react-icons/fa";
+import { FaRegLightbulb, FaCode, FaSortAlphaDown, FaSortAlphaUp, FaLinkedin, FaGithub, FaChevronDown, FaChevronRight } from "react-icons/fa";
 import { IoConstructSharp, IoExtensionPuzzleOutline, IoBookOutline, IoSearchOutline } from "react-icons/io5";
 import { MdCompareArrows, MdContentCopy } from "react-icons/md";
 import { LiaProjectDiagramSolid } from "react-icons/lia";
@@ -26,5 +26,7 @@ export {
     IoSearchOutline,
     RxHamburgerMenu,
     FaLinkedin,
-    FaGithub
+    FaGithub,
+    FaChevronDown, 
+    FaChevronRight
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import MainLayout from '../components/Main Layout/MainLayout'
 import useFetch from '../hooks/useFetch'
 import DownloadBook from '../components/DownloadBook';
+import { FaChevronDown, FaChevronRight } from '../assets/ReactIcons';
 
 import { useState } from 'react';
 
@@ -24,15 +25,16 @@ const Classification = ({ classification }) => {
         <h1 className="text-lg font-semibold md:text-xl">
           {classification.name}
         </h1>
+        
         <button
           onClick={toggleDescriptionVisibility}
           className="ml-auto text-gray-600 hover:text-gray-800"
           aria-label={isDescriptionVisible ? "Hide description" : "Show description"}
         >
           {isDescriptionVisible ? (
-            <span>🔽</span> // Down arrow icon (visible)
+            <FaChevronDown className='w-auto h-4 text-primaryText' />
           ) : (
-            <span>▶️</span> // Right arrow icon (hidden)
+            <FaChevronRight className='w-auto h-4 text-primaryText' />
           )}
         </button>
       </div>
