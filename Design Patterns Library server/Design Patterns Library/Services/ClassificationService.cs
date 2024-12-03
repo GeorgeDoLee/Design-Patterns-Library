@@ -8,10 +8,12 @@ namespace Design_Patterns_Library.Services
     public class ClassificationService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly ImageService _imageService;
 
-        public ClassificationService(ApplicationDbContext context)
+        public ClassificationService(ApplicationDbContext context, ImageService imageService)
         {
             _dbContext = context;
+            _imageService = imageService;
         }
 
 
@@ -49,6 +51,51 @@ namespace Design_Patterns_Library.Services
             return classification;
         }
 
+
+        public async Task<Classification> UploadClassificationIconAsync(int id, IFormFile file)
+        {
+            var classification = await GetClassificationByIdAsync(id);
+
+            if(classification == null)
+            {
+                return null;
+            }
+
+            if(classification.Icon != "")
+            {
+                _imageService.DeleteImage(classification.Icon);
+            }
+
+            var iconPath = await _imageService.UploadImageAsync(file);
+
+            classification.Icon = iconPath;
+            _dbContext.Classifications.Update(classification);
+            await _dbContext.SaveChangesAsync();
+
+            return classification;
+        }
+
+
+        public async Task<Classification> DeleteClassificationIconAsync(int id)
+        {
+            var classification = await GetClassificationByIdAsync(id);
+
+            if (classification == null)
+            {
+                return null;
+            }
+
+            if (classification.Icon != "")
+            {
+                _imageService.DeleteImage(classification.Icon);
+                classification.Icon = "";
+                _dbContext.Classifications.Update(classification);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return classification;
+        }
+        
 
         public async Task<bool> RemoveClassificationAsync(int id)
         {

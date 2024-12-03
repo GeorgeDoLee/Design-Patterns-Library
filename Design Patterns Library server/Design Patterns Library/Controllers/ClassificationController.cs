@@ -49,6 +49,34 @@ namespace Design_Patterns_Library.Controllers
         }
 
 
+        [HttpPost("upload-icon/{id}")]
+        public async Task<IActionResult> UploadClassifcationIcon(int id, IFormFile file)
+        {
+            var classification = await _classificationService.UploadClassificationIconAsync(id, file);
+
+            if(classification == null)
+            {
+                return NotFound("Classification Not Found.");
+            }
+
+            return Ok(classification);
+        }
+
+
+        [HttpDelete("delete-icon/{id}")]
+        public async Task<IActionResult> DeleteClassificationIcon(int id)
+        {
+            var classification = await _classificationService.DeleteClassificationIconAsync(id);
+
+            if(classification == null)
+            {
+                return NotFound("Classification Not Found.");
+            }
+
+            return Ok(classification);
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveClassification(int id)
         {

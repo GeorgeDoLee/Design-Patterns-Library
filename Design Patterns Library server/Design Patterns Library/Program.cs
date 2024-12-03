@@ -26,6 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<DesignPatternService>();
 builder.Services.AddScoped<ClassificationService>();
+builder.Services.AddScoped<ImageService>();
 
 var app = builder.Build();
 
