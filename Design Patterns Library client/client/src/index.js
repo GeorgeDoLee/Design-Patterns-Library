@@ -13,6 +13,7 @@ import PatternCataloguePage from './pages/PatternCataloguePage';
 import ClassificationGuidePage from './pages/ClassificationGuidePage';
 import BookPage from './pages/BookPage';
 import ErrorPage from './pages/ErrorPage';
+import UploadDesignPatternPage from './pages/Admin Pages/UploadDesignPatternPage';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminPage />
+  },
+  {
+    path: '/upload-design-pattern',
+    element: <UploadDesignPatternPage />
   },
   {
     path: '/patterns-catalogue',
